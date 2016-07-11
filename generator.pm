@@ -11,7 +11,7 @@ BEGIN {
 
   our @ISA = qw(Exporter);
 
-  our @EXPORT_OK = qw(gen_header gen_begin gen_local_variables gen_global_variables);
+  our @EXPORT_OK = qw(gen_header gen_begin gen_sub gen_local_variables gen_global_variables);
 }
 
 our $package_source;
@@ -36,6 +36,14 @@ sub gen_begin {
   $package_source .= 'our @EXPORT_OK = ' . "qw(" . join(' ', @package_export_functions) . ");$endl}" . "$endl$endl";
 }
 
+sub gen_sub {
+  if ((my $len = @_) > 0) {
+    map { $package_source .= 'sub $' . "$_ {$endl";
+          $package_source .= "$tab$endl" . "}$endl$endl";
+        } @_;
+  }
+}
+
 sub gen_local_variables {
   write_variables('my', @_);
 }
@@ -51,4 +59,6 @@ sub write_variables {
     $package_source .= "$endl";
   }
 }
+
+
 1;
