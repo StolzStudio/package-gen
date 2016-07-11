@@ -40,7 +40,7 @@ sub gen_begin {
 
 sub gen_sub {
   if ((my $len = @_) > 0) {
-    map { $package_source .= 'sub $' . "$_ {$endl";
+    map { $package_source .= 'sub ' . "$_ {$endl";
           $package_source .= "$tab$endl" . "}$endl$endl";
         } @_;
   }
