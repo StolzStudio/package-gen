@@ -19,7 +19,7 @@ BEGIN {
 our $package_source;
 
 sub gen_header {
-  my ($package_name) = @_;
+  my ($package_name) = shift;
   $package_source .= "package $package_name;$endl$endl";
   $package_source .= "use strict;$endl" . "use warnings;$endl";
 
