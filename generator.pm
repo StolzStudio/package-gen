@@ -66,6 +66,7 @@ sub save_to_file {
   my ($path, $name) = @_;
 
   open(STDOUT, '>', "$path$name.pm");
-  print($package_source);
+  print($package_source . '1;');
 }
+
 1;
