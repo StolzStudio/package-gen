@@ -11,7 +11,7 @@ BEGIN {
 
   our @ISA = qw(Exporter);
 
-  our @EXPORT_OK = qw(gen_header gen_begin gen_local_variables);
+  our @EXPORT_OK = qw(gen_header gen_begin gen_local_variables gen_global_variables);
 }
 
 our $package_source;
@@ -39,7 +39,14 @@ sub gen_begin {
 sub gen_local_variables {
   if ((my $len = @_) > 0) {
     map { $package_source .= 'my $' . "$_;$endl" } @_;
-    $package_source .= "$endl$endl";
+    $package_source .= "$endl";
+  }
+}
+
+sub gen_global_variables {
+  if ((my $len = @_) > 0) {
+    map { $package_source .= 'our $' . "$_;$endl" } @_;
+    $package_source .= "$endl";
   }
 }
 
