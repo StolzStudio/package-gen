@@ -37,17 +37,18 @@ sub gen_begin {
 }
 
 sub gen_local_variables {
-  if ((my $len = @_) > 0) {
-    map { $package_source .= 'my $' . "$_;$endl" } @_;
-    $package_source .= "$endl";
-  }
+  write_variables('my', @_);
 }
 
 sub gen_global_variables {
+  write_variables('our', @_);
+}
+
+sub write_variables {
   if ((my $len = @_) > 0) {
-    map { $package_source .= 'our $' . "$_;$endl" } @_;
+    my ($type)  = shift;
+    map { $package_source .= "$type" . ' $' . "$_;$endl" } @_;
     $package_source .= "$endl";
   }
 }
-
 1;
