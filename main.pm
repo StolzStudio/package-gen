@@ -13,11 +13,11 @@ BEGIN {
 }
 
 
-generator::gen_header(qw(test_name packet rulet));
-generator::gen_begin(qw(func1 func2 func3));
-generator::gen_local_variables(qw(a b c d));
-generator::gen_global_variables(qw(x y z));
-generator::gen_sub(qw(func1 func2));
-
+generator::gen_header(qw(speaker));
+generator::gen_begin(qw(hello_message exit_message));
+# generator::gen_local_variables(qw(a b c d));
+# generator::gen_global_variables(qw(x y z));
+generator::gen_sub(qw(hello_message exit_message));
+generator::save_to_file(qw(/users/stolz/git/package-gen/ speaker));
 print $generator::package_source;
 1;

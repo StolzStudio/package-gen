@@ -11,7 +11,9 @@ BEGIN {
 
   our @ISA = qw(Exporter);
 
-  our @EXPORT_OK = qw(gen_header gen_begin gen_sub gen_local_variables gen_global_variables);
+  our @EXPORT_OK = qw(gen_header gen_begin gen_sub
+                      gen_local_variables gen_global_variables
+                      save_to_file);
 }
 
 our $package_source;
@@ -60,5 +62,10 @@ sub write_variables {
   }
 }
 
+sub save_to_file {
+  my ($path, $name) = @_;
 
+  open(STDOUT, '>', "$path$name.pm");
+  print($package_source);
+}
 1;
