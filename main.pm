@@ -13,7 +13,8 @@ BEGIN {
 }
 
 
-generator::gen_header("test_name", 24);
+generator::gen_header(qw(test_name packet rulet));
+generator::gen_begin(qw(func1 func2 func3));
 
 print $generator::package_source;
 1;
