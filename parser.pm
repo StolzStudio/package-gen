@@ -40,8 +40,13 @@ sub parse_begin {
 }
 
 sub parse_sub {
-	@package_functions = @_;
-	map { $_ =~ s|sub(\w+)|$1| } @package_functions;
+	if ((my $len = @_) == 1) {
+		my $text = shift;
+		@package_functions = $text =~ m|(\s*sub\w+\s*)|g;
+	} else {
+		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g }@_;
+	}
+	map { $_ =~ s|sub(\w+)|$1|; print "$_\n"; } @package_functions;
 }
 
 1;
