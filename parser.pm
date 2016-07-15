@@ -25,13 +25,24 @@ my $is_text = 0;
 my @sourse_arr;
 
 sub parse_header {
-	$package_path = shift;
+	if ($is_text) {
+		$package_path =~ s|(\w+[^/]$)|$1/|;
+	}
 	$package_path =~ s|(\w+[^/]$)|$1/|;
 
 	$package_name = shift;
 	if ((my $len = @_) > 0) {
 		@package_modules = @_;
 	}
+}
+
+sub parse_module {
+	if ($is_text) {
+		@package_modules = $sourse_text =~ m|\s*mod\w+\s*|g;
+	} else {
+		@package_modules = map { $_ =~ m|\s*mod\w+\s*|g } @sourse_arr;
+	}
+	map { $_ =~ s|mod(\w+)|$1|; print $_ . "\n" } @package_modules;
 }
 
 sub parse_sub {
