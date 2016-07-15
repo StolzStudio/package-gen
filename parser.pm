@@ -34,16 +34,6 @@ sub parse_header {
 	}
 }
 
-sub parse_begin {
-	if ($is_text) {
-		my $f = $sourse_text =~ m|\{}|g;
-		print "|". $f . "|\n";
-		# if (fc("all") eq fc($flag)) {
-		# 	@package_export_functions = @package_functions;
-		# }
-	}
-}
-
 sub parse_sub {
 	if ($is_text) {
 		@package_functions = $sourse_text =~ m|(\s*sub\w+\s*)|g;
@@ -55,7 +45,7 @@ sub parse_sub {
 			$_ =~ s|subex(\w+)|$1|;
 			push(@package_export_functions, $_);
 		} else {
-			$_ =~ s|sub(\w+)|$1|; 
+			$_ =~ s|sub(\w+)|$1|;
 		}
 		print "$_\n";
 	} @package_functions;
