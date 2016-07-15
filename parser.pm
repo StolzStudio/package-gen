@@ -44,11 +44,10 @@ sub parse_begin {
 }
 
 sub parse_sub {
-	if ((my $len = @_) == 1) {
-		my $text = shift;
-		@package_functions = $text =~ m|(\s*sub\w+\s*)|g;
+	if ($is_text) {
+		@package_functions = $sourse_text =~ m|(\s*sub\w+\s*)|g;
 	} else {
-		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g }@_;
+		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g } @sourse_arr;
 	}
 	map { $_ =~ s|sub(\w+)|$1|; print "$_\n"; } @package_functions;
 }
