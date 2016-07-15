@@ -38,17 +38,15 @@ Script know some constructions:
     sub test3 {}
 ### BEGIN phase: 
     
-    you can take what functions you want to export
+    when you add functions you can say what functions you want to export
     
-    {(function name)..}
+    just add after (sub) (ex) key
     
     EXAMPLE:
-    {test parse watch} - convert to: 
-    our @EXPORT_OK = qw(test parse watch);
-    
-    parser this phase know flag "all"
-    
-    flag "all" say parser to take all functions and put they to export part in BEGIN
+    subextest - convert to: 
+    our @EXPORT_OK = qw(test);
+    and add:
+    sub test {}
     
 ###use modules:
   
