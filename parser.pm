@@ -35,11 +35,12 @@ sub parse_header {
 }
 
 sub parse_begin {
-	if ((my $len = @_) = 1) {
-		my $flag = shift;
-		if (fc("all") eq fc($flag)) {
-			@package_export_functions = @package_functions;
-		}
+	if ($is_text) {
+		my $f = $sourse_text =~ m|\{}|g;
+		print "|". $f . "|\n";
+		# if (fc("all") eq fc($flag)) {
+		# 	@package_export_functions = @package_functions;
+		# }
 	}
 }
 
@@ -49,7 +50,15 @@ sub parse_sub {
 	} else {
 		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g } @sourse_arr;
 	}
-	map { $_ =~ s|sub(\w+)|$1|; print "$_\n"; } @package_functions;
+	map {
+		if ($_ =~ m|subex(\w+)|) {
+			$_ =~ s|subex(\w+)|$1|;
+			push(@package_export_functions, $_);
+		} else {
+			$_ =~ s|sub(\w+)|$1|; 
+		}
+		print "$_\n";
+	} @package_functions;
 }
 
 sub init_parse_sourse {
