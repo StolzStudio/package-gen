@@ -9,11 +9,14 @@ BEGIN {
 
 	our @ISA = qw(Exporter);
 
-	our @EXPORT_OK = qw(parse_header);
+	our @EXPORT_OK = qw(
+											parse_header, parse_sub, parse_begin,
+											parse_module, init_parse_sourse
+											);
 }
 
-my $package_path;
 my $package_name;
+my @package_pathes;
 my @package_modules;
 my @package_export_functions;
 my @package_functions;
@@ -26,14 +29,14 @@ my @sourse_arr;
 
 sub parse_header {
 	if ($is_text) {
-		$package_path =~ s|(\w+[^/]$)|$1/|;
-	}
-	$package_path =~ s|(\w+[^/]$)|$1/|;
+		@package_pathes = $sourse_text =~ m|/(\w+[^/])|g;
 
-	$package_name = shift;
-	if ((my $len = @_) > 0) {
-		@package_modules = @_;
+		map { print $_ . "\n"; } @package_pathes;
+	} else {
+		@package_pathes = map { $_ =~ m|/(\w+[^/])|g } @sourse_arr;
 	}
+
+	$package_name = pop @package_pathes;
 }
 
 sub parse_module {
