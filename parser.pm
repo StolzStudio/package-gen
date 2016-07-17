@@ -40,19 +40,19 @@ sub parse_header {
 
 sub parse_module {
 	if ($is_text) {
-		@package_modules = $sourse_text =~ m|\s*mod\w+\s*|g;
+		@package_modules = $sourse_text =~ m|\s*mod(\w+)\s*|g;
 	} else {
-		@package_modules = map { $_ =~ m|\s*mod\w+\s*|g } @sourse_arr;
+		@package_modules = map { $_ =~ m|\s*mod(\w+)\s*|g } @sourse_arr;
 	}
 
-	map { $_ =~ s|mod(\w+)|$1| } @package_modules;
+	# map { $_ =~ s|mod(\w+)|$1| } @package_modules;
 }
 
 sub parse_sub {
 	if ($is_text) {
-		@package_functions = $sourse_text =~ m|(\s*sub\w+\s*)|g;
+		@package_functions = $sourse_text =~ m|\s*(sub\w+)\s*|g;
 	} else {
-		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g } @sourse_arr;
+		@package_functions = map { $_ =~ m|\s*(sub\w+)\s*|g } @sourse_arr;
 	}
 
 	map {
