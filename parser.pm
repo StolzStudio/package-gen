@@ -10,19 +10,19 @@ BEGIN {
 	our @ISA = qw(Exporter);
 
 	our @EXPORT_OK = qw(
-											parse_header, parse_module,
-											parse_sub, parse_begin,
-								 			parse_var, init_parse_sourse
+											parse_header parse_module
+											parse_sub parse_var
+											init_parse_sourse
 											);
 }
 
-my $package_name;
-my @package_path;
-my @package_modules;
-my @package_export_functions;
-my @package_functions;
-my %package_my_variables;
-my %package_our_variables;
+our $package_name;
+our @package_path;
+our @package_modules;
+our @package_export_functions;
+our @package_functions;
+our %package_my_variables;
+our %package_our_variables;
 
 my $sourse_text;
 my $is_text = 0;
@@ -31,8 +31,6 @@ my @sourse_arr;
 sub parse_header {
 	if ($is_text) {
 		@package_path = $sourse_text =~ m|/(\w+[^/])|g;
-
-		map { print $_ . "\n"; } @package_path;
 	} else {
 		@package_path = map { $_ =~ m|/(\w+[^/])|g } @sourse_arr;
 	}
@@ -78,7 +76,6 @@ sub parse_var {
 		@my_var  = map { $_ =~ m|my\w+|g  } @sourse_arr;
 		@our_var = map { $_ =~ m|our\w+|g } @sourse_arr;
 	}
-
 		%package_my_variables  = (
 														 'arr'  => [map { $_ =~ m|my(\w+)s$|g;   } @my_var],
 														 'scal' => [map { $_ =~ m|my(\w+[^s])$|g } @my_var],
@@ -87,6 +84,16 @@ sub parse_var {
 														 'arr'  => [map { $_ =~ m|our(\w+)s$|g;   } @our_var],
 														 'scal' => [map { $_ =~ m|our(\w+[^s])$|g } @our_var],
 														 );
+}
+
+sub parse {
+	(my $len = @_) != 0 or die "no text to generate module";
+
+	&init_parse_sourse;
+	&parse_header;
+	&parse_module;
+	&parse_sub;
+	&parse_var;
 }
 
 sub init_parse_sourse {
