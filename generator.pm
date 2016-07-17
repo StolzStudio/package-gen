@@ -2,6 +2,7 @@ package generator;
 
 use strict;
 use warnings;
+use parser;
 
 our $endl = "\n";
 our $tab  = "\t";
@@ -11,7 +12,7 @@ BEGIN {
 
   our @ISA = qw(Exporter);
 
-  our @EXPORT_OK = qw(gen_header gen_begin gen_sub
+  our @EXPORT_OK = qw(gen gen_header gen_begin gen_sub
                       gen_local_variables gen_global_variables
                       save_to_file);
 }
@@ -47,25 +48,41 @@ sub gen_sub {
 }
 
 sub gen_local_variables {
-  write_variables('my', @_);
+  my %var = %{shift()};
+
+  write_variables('my', '@', (@{$var{arr}}));
+  write_variables('my', '$', (@{$var{scal}}));
 }
 
 sub gen_global_variables {
-  write_variables('our', @_);
+  my %var = %{shift()};
+
+  write_variables('our', '@', (@{$var{arr}}));
+  write_variables('our', '$', (@{$var{scal}}));
 }
 
 sub write_variables {
   if ((my $len = @_) > 0) {
     my ($type)  = shift;
-    map { $package_source .= "$type" . ' $' . "$_;$endl" } @_;
+    my ($sigil) = shift;
+    map { $package_source .= "$type " . $sigil . "$_;$endl" } @_;
     $package_source .= "$endl";
   }
 }
 
-sub save_to_file {
-  my ($path, $name) = @_;
+sub gen {
+  gen_header($parser::package_name, @parser::package_modules);
+  gen_begin(@parser::package_export_functions);
+  gen_global_variables(\%parser::package_our_variables);
+  gen_local_variables(\%parser::package_my_variables);
+  gen_sub(@parser::package_functions);
+  save_to_file(@parser::package_path, $parser::package_name);
+}
 
-  open(STDOUT, '>', "$path$name.pm");
+sub save_to_file {
+  my (@path) = @_;
+  my $way = "/" . join('/', @path) . ".pm";
+  open(STDOUT, '>', $way);
   print($package_source . '1;');
 }
 
