@@ -13,18 +13,26 @@ My perl script to generate simple package modules.
 Script know some constructions:
   
 ### scalars:
+
     ("my" or "our") + (variable name) 
-    
-    EXAMPLE:
-    myname ourdate - convert to:
-    "my $name; our $date;"
+ 
+EXAMPLE:
+
+`myvar1 ourvar2` - convert to:
+
+    my $var1; 
+    our $var2;
 
 ### arrays:
+
     ("my" or "our") + (variable name) + ('s')
-    
-    EXAMPLE:
-    mybananas ourapples - convert to:
-    "my @bananas; our @apples;"
+
+EXAMPLE:
+
+`myarr1s ourarr2s` - convert to:
+
+    my @arr;
+    our @arr;
   
 ### funstions:
 
@@ -42,7 +50,7 @@ EXAMPLE:
   
 when you add functions you can say what functions you want to export
     
-just add (ex) key after (sub) in function constructor
+just add `(ex)` key after `(sub)` in function constructor
     
 EXAMPLE:
 
