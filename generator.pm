@@ -21,6 +21,7 @@ our $package_source;
 
 sub gen_header {
   my ($package_name) = shift;
+  chop $package_name;
   $package_source .= "package $package_name;$endl$endl";
   $package_source .= "use strict;$endl" . "use warnings;$endl";
 
@@ -82,8 +83,9 @@ sub gen {
 sub save_to_file {
   my (@path) = @_;
   my $way = "/" . join('/', @path) . ".pm";
-  open(STDOUT, '>', $way);
-  print($package_source . '1;');
+  open(my $file, '>', $way);
+  print($file $package_source . '1;');
+  close($file);
 }
 
 1;
