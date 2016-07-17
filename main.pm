@@ -17,13 +17,13 @@ BEGIN {
 
 print speaker::message_hello;
 
-my $text = "";
-while (fc($text) ne fc("-exit")) {
-  $text = <STDIN>;
+my $text = <STDIN>;
+while ($text ne "exit\n") {
   chomp $text;
   parser::parse($text);
   generator::gen;
   print speaker::message_finish_generate;
+  $text = <STDIN>;
 }
 
 print speaker::message_exit;
