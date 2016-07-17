@@ -3,6 +3,9 @@ package main;
 use strict;
 use warnings;
 use generator;
+use speaker;
+use parser;
+use feature "fc";
 
 BEGIN {
   require Exporter;
@@ -12,12 +15,16 @@ BEGIN {
   our @EXPORT_OK = qw();
 }
 
+print speaker::message_hello;
 
-generator::gen_header(qw(speaker));
-generator::gen_begin(qw(hello_message exit_message));
-# generator::gen_local_variables(qw(a b c d));
-# generator::gen_global_variables(qw(x y z));
-generator::gen_sub(qw(hello_message exit_message));
-generator::save_to_file(qw(/users/stolz/git/package-gen/ speaker));
-print $generator::package_source;
+my $text = "";
+while (fc($text) ne fc("-exit")) {
+  $text = <STDIN>;
+  chomp $text;
+  parser::parse($text);
+  generator::gen;
+  print speaker::message_finish_generate;
+}
+
+print speaker::message_exit;
 1;
