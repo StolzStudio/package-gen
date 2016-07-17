@@ -10,13 +10,14 @@ BEGIN {
 	our @ISA = qw(Exporter);
 
 	our @EXPORT_OK = qw(
-											parse_header, parse_sub, parse_begin,
-											parse_module, init_parse_sourse
+											parse_header, parse_module,
+											parse_sub, parse_begin,
+								 			parse_var, init_parse_sourse
 											);
 }
 
 my $package_name;
-my @package_pathes;
+my @package_path;
 my @package_modules;
 my @package_export_functions;
 my @package_functions;
@@ -29,14 +30,14 @@ my @sourse_arr;
 
 sub parse_header {
 	if ($is_text) {
-		@package_pathes = $sourse_text =~ m|/(\w+[^/])|g;
+		@package_path = $sourse_text =~ m|/(\w+[^/])|g;
 
-		map { print $_ . "\n"; } @package_pathes;
+		map { print $_ . "\n"; } @package_path;
 	} else {
-		@package_pathes = map { $_ =~ m|/(\w+[^/])|g } @sourse_arr;
+		@package_path = map { $_ =~ m|/(\w+[^/])|g } @sourse_arr;
 	}
 
-	$package_name = pop @package_pathes;
+	$package_name = pop @package_path;
 }
 
 sub parse_module {
@@ -46,7 +47,7 @@ sub parse_module {
 		@package_modules = map { $_ =~ m|\s*mod\w+\s*|g } @sourse_arr;
 	}
 
-	map { $_ =~ s|mod(\w+)|$1|; print $_ . "\n" } @package_modules;
+	map { $_ =~ s|mod(\w+)|$1| } @package_modules;
 }
 
 sub parse_sub {
@@ -63,7 +64,6 @@ sub parse_sub {
 		} else {
 			$_ =~ s|sub(\w+)|$1|;
 		}
-		print "$_\n";
 	} @package_functions;
 }
 
@@ -87,13 +87,6 @@ sub parse_var {
 														 'arr'  => [map { $_ =~ m|our(\w+)s$|g;   } @our_var],
 														 'scal' => [map { $_ =~ m|our(\w+[^s])$|g } @our_var],
 														 );
-
-	  foreach my $key ( keys %package_our_variables )  {
-			print "\nin group $key are: ";
-			foreach ( @{$package_our_variables{$key}} )  {
-				print $_ . " ";
-			}
-		}
 }
 
 sub init_parse_sourse {
