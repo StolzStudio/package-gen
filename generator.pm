@@ -82,8 +82,9 @@ sub gen {
 
 sub save_to_file {
   my (@path) = @_;
-  my $way = "/" . join('/', @path) . ".pm";
-  open(my $file, '>', $way);
+  my $way = "/" . join('/', @path);
+  chop($way);
+  open(my $file, '>', "$way.pm");
   print($file $package_source . '1;');
   close($file);
 }
