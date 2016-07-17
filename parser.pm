@@ -20,8 +20,8 @@ my @package_pathes;
 my @package_modules;
 my @package_export_functions;
 my @package_functions;
-my @package_my_variables;
-my @package_our_variables;
+my %package_my_variables;
+my %package_our_variables;
 
 my $sourse_text;
 my $is_text = 0;
@@ -45,6 +45,7 @@ sub parse_module {
 	} else {
 		@package_modules = map { $_ =~ m|\s*mod\w+\s*|g } @sourse_arr;
 	}
+
 	map { $_ =~ s|mod(\w+)|$1|; print $_ . "\n" } @package_modules;
 }
 
@@ -54,6 +55,7 @@ sub parse_sub {
 	} else {
 		@package_functions = map { $_ =~ m|(\s*sub\w+\s*)|g } @sourse_arr;
 	}
+
 	map {
 		if ($_ =~ m|subex(\w+)|) {
 			$_ =~ s|subex(\w+)|$1|;
@@ -63,6 +65,35 @@ sub parse_sub {
 		}
 		print "$_\n";
 	} @package_functions;
+}
+
+sub parse_var {
+	my @my_var;
+	my @our_var;
+
+	if ($is_text) {
+		@my_var  = $sourse_text =~ m|my\w+|g;
+		@our_var = $sourse_text =~ m|our\w+|g;
+	} else {
+		@my_var  = map { $_ =~ m|my\w+|g  } @sourse_arr;
+		@our_var = map { $_ =~ m|our\w+|g } @sourse_arr;
+	}
+
+		%package_my_variables  = (
+														 'arr'  => [map { $_ =~ m|my(\w+)s$|g;   } @my_var],
+														 'scal' => [map { $_ =~ m|my(\w+[^s])$|g } @my_var],
+														 );
+		%package_our_variables = (
+														 'arr'  => [map { $_ =~ m|our(\w+)s$|g;   } @our_var],
+														 'scal' => [map { $_ =~ m|our(\w+[^s])$|g } @our_var],
+														 );
+
+	  foreach my $key ( keys %package_our_variables )  {
+			print "\nin group $key are: ";
+			foreach ( @{$package_our_variables{$key}} )  {
+				print $_ . " ";
+			}
+		}
 }
 
 sub init_parse_sourse {
