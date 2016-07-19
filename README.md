@@ -79,7 +79,7 @@ IMPORTANT - generator bild himself modules "strict" and "warnings"
   
 EXAMPLE:
 
-`/users/stolz/git/package-gen/generator/` - convert to
+`/users/stolz/git/package-gen/generator` - convert to
 
     path         - /users/stolz/git/package-gen/
     package name - generator
